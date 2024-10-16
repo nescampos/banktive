@@ -1,0 +1,81 @@
+﻿@model Banktive.Web.Models.TransferModel.DetailTransferViewModel
+@{
+    ViewData["Title"] = "Payment details";
+}
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+
+<div class="row">
+    <div class="col-md-6">
+
+        <h3>Destination</h3>
+        Address: @Model.Payment.XRPLDestinationWallet
+
+        @if (Model.Payment.Destination != null)
+        {
+            <p>
+                Name : @Model.Payment.Destination.Name<br />
+                Email: @Model.Payment.Destination.Email<br />
+                Account (name/id): @Model.Payment.Destination.Account<br />
+            </p>
+        }
+
+        @if (Model.Payment.PaymentStatusId == Constants.PaymentCancelled)
+        {
+            <div class="alert alert-warning" role="alert">
+                This payment was canceled by the creator. <br />
+            </div>
+        }
+        else
+        {
+            if (Model.Payment.PaymentStatusId == Constants.PaymentRejected)
+            {
+                    
+                <div class="alert alert-warning" role="alert">
+                    This payment was rejected.<br />
+                </div>
+            }
+            else
+            {
+                if (Model.Payment.PaymentStatusId == Constants.PaymentCreated)
+                {
+                    <div class="alert alert-info" role="alert">
+                        Payment is pending approval by the creator.<br />
+                    </div>
+                    
+                }
+                else
+                {
+                    <div class="alert alert-success" role="alert">
+                        The payment was approved and the money sent to the destination. <br />
+                    </div>
+                }               
+            }
+         }
+
+        
+
+
+    </div>
+    <div class="col-md-6">
+        <h3>Payment data</h3>
+        Wallet: @Model.Payment.Wallet.Name <br />
+        Amount: @Model.Payment.Amount <br />
+        Currency: @Model.Payment.Currency.Name (@Model.Payment.Currency.Code) <br />
+        Date: <span>@Model.Payment.CreatedAt.ToLocalTime()</span> <br />
+        Comments: @Model.Payment.Comments <br />
+    </div>
+
+</div>

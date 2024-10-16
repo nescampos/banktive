@@ -1,0 +1,80 @@
+﻿@model Banktive.Web.Models.CreditModel.ConfirmCheckViewModel
+@{
+    ViewData["Title"] = "Confirm payment with credit";
+}
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+@using (Html.BeginForm("ConfirmCheck","Credit", FormMethod.Post, new { id="deferredPaymentForm" }))
+{
+    @Html.HiddenFor(x => x.Form.Id)
+    @Html.HiddenFor(x => x.Form.CheckXRPLId)
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Details of payment</h3>
+            Wallet: <b>@Model.Check.Wallet.Name</b> <br />
+            Amount: <b>@Model.Check.Amount</b> <br />
+            Currency: <b>@Model.Check.Currency.Name (@Model.Check.Currency.Code)</b> <br />
+        </div>
+        <div class="col-md-6">
+            <br />
+            Destination: <b>@(Model.Check.Destination != null? Model.Check.Destination.Name + " ("+Model.Check.XRPLDestinationWallet+")":Model.Check.XRPLDestinationWallet) </b> <br />
+            Creation date: <b>@Model.Check.CreatedAt.ToLocalTime()</b> <br />
+            Date to cash: <b>@Model.Check.DateToCash.ToLocalTime()</b> <br />
+            Comments: <b>@Model.Check.Comments</b> <br />
+            
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-3">
+            <br />
+        </div>
+        <div class="form-group col-md-5">
+            <input type="submit" value="Cancel" class="btn btn-warning loadingButton" name="Form.Cancelled" /> &emsp;
+            <input type="button" class="btn btn-primary loadingButton approveCheckBtn" value="Approve payment with credit" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-5 alert alert-danger errorWallet" style="display:none;">
+            Error with your wallet.
+        </div>
+        <div class="col-5 alert alert-danger errorPayment" style="display:none;">
+            Error when making the payment with credit, check your wallet and balance, and try again.
+        </div>
+        <div class="col-5 alert alert-success successPayment" style="display:none;">
+            The payment with credit was made and sent successfully.
+        </div>
+        <div class="col-5 alert alert-info waitingPayment" style="display:none;">
+            The transaction is being approved.
+        </div>
+    </div>
+}
+
+
+@section Scripts
+{
+    <script src="https://unpkg.com/xrpl@2.0.0/build/xrpl-latest-min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.approveCheckBtn').click(async function () {
+                var seedCode = $('#seedCode').val();
+                await sendDeferredPayment('@Model.Check.Wallet.XRPLSeed','@Model.Check.Currency.Code',@(Model.Check.Amount.ToString("N2").Replace(",",".")),'@Model.Check.XRPLDestinationWallet')
+            });
+        });
+    </script>
+    
+}

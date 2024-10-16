@@ -1,0 +1,133 @@
+﻿@model Banktive.Web.Models.CreditModel.ViewCheckViewModel
+@{
+    ViewData["Title"] = "Payment with credit details";
+}
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+
+<div class="row">
+    <div class="col-md-6">
+
+        <h3>Destination</h3>
+        Address: @Model.Check.XRPLDestinationWallet
+
+        @if (Model.Check.Destination != null)
+        {
+            <p>
+                Name : @Model.Check.Destination.Name<br />
+                Email: @Model.Check.Destination.Email<br />
+                Account (name/id): @Model.Check.Destination.Account<br />
+            </p>
+        }
+
+        @if (Model.Check.CheckStatusId == Constants.CheckCancelled)
+        {
+            <div class="alert alert-warning" role="alert">
+                This payment was canceled by the creator. <br />
+            </div>
+        }
+        else
+        {
+            if (Model.Check.CheckStatusId == Constants.CheckConfirmed)
+            {
+                    
+                <div class="alert alert-primary" role="alert">
+                    This payment with credit was confirmed by the creator.<br />
+                </div>
+            }
+            else
+            {
+                if (Model.Check.CheckStatusId == Constants.CheckCreated)
+                {
+                    <div class="alert alert-info" role="alert">
+                        Payment with credit is pending approval by the creator.<br />
+                    </div>
+                    
+                }
+                else
+                {
+                    <div class="alert alert-success" role="alert">
+                        The payment with credit was approved and the money cashed by the destination. <br />
+                    </div>
+                }               
+            }
+         }
+
+        
+
+
+    </div>
+    <div class="col-md-6">
+        <h3>Payment data</h3>
+        Wallet: @Model.Check.Wallet.Name <br />
+        Amount: @Model.Check.Amount <br />
+        Currency: @Model.Check.Currency.Name (@Model.Check.Currency.Code) <br />
+        Date: <span>@Model.Check.CreatedAt.ToLocalTime()</span> <br />
+        Comments: @Model.Check.Comments <br />
+    </div>
+
+</div>
+<br />
+@if(Model.Check.CheckStatusId == Constants.CheckConfirmed && Model.Check.DateToCash.Date <= DateTime.Today.Date && Model.WalletForCash.UserId == User.Identity.Name)
+{
+    @using(Html.BeginForm("CashCheck","Credit",FormMethod.Post,new {id = "cashPaymentForm"}))
+    {
+        <div class="row">
+                    
+            <div class="col-6">
+                From: @Model.Check.UserId <br />
+                <input type="hidden" name="successfulPayment" id="successfulPayment"/>
+                <input type="hidden" value="@Model.Check.Id" name="id" id="id" />
+            </div>
+            <div class="col-6">
+                <input type="button" value="Redeem money" id="redeemMoney" class="btn btn-success btnRedeem" /> <br />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-5 alert alert-danger errorWallet" style="display:none;">
+                Error in this wallet.
+            </div>
+            <div class="col-5 alert alert-danger errorPayment" style="display:none;">
+                Error when making the payment, it is probable that the issuer of the payment with credit does not have a balance to be able to be redeemed.
+            </div>
+            <div class="col-5 alert alert-success successPayment" style="display:none;">
+                The payment was made successfully.
+            </div>
+            <div class="col-5 alert alert-info waitingPayment" style="display:none;">
+                The payment is being executed.
+            </div>
+        </div>
+    }
+        
+}
+
+@if(Model.WalletForCash.UserId == User.Identity.Name)
+{
+    @section Scripts
+    {
+        <script src="https://unpkg.com/xrpl@2.0.0/build/xrpl-latest-min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $('.btnRedeem').click(async function () {
+                    var seedCode = $('#seedCode').val();
+                    await cashMoneyFromPayment('@Model.Check.XRPLDestinationWallet','@Model.WalletForCash.XRPLSeed','@Model.Check.Currency.Code',@(Model.Check.Amount.ToString("N2").Replace(",",".")),'@Model.Check.CheckXRPLId')
+                });
+            });
+        </script>
+    
+    }
+}
+

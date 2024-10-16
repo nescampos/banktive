@@ -1,0 +1,51 @@
+﻿@model Banktive.Web.Models.DepositModel.SelectWalletViewModel
+@{
+    ViewData["Title"] = "Select the wallet for deposits";
+}
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+
+<div class="row">
+    @if (Model.Wallets.Any())
+    {
+        foreach (var address in Model.Wallets)
+        {
+            <section class="col-4 col-12-narrower">
+                <header>
+                    <h3>@Html.ActionLink(address.Name, "CreateTimeDeposit", "Deposit", new { id = address.Id }, new { @class = "loadingButton" })</h3>
+                </header>
+                <p>
+                    Balance:
+                    <strong><span class="balanceCBDCXRPLWallet" data-walletid="@address.Id">-</span> @address.Currency.Name</strong>
+                    <br />
+                    Alias : <strong>@address.Alias</strong> <br />
+                    Description : <strong>@address.Description</strong> <br />
+                    Id : <strong>@address.Id</strong> <br />
+                </p>
+                <ul class="actions">
+                    <li><a href="@Url.Action("CreateTimeDeposit","Deposit", new { id = address.Id })" class="btn btn-info loadingButton">Select</a></li>
+                </ul>
+            </section>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <p class="alert alert-info alert-dismissible">You do not have registered wallets</p>
+        </div>
+    }
+
+
+</div>

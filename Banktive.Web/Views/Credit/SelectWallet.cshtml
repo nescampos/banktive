@@ -1,0 +1,89 @@
+﻿@model Banktive.Web.Models.CreditModel.SelectWalletViewModel
+@{
+    ViewData["Title"] = "Select the wallet for payment with credit";
+}
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+
+<div class="row">
+    @if (Model.Wallets.Any())
+    {
+        foreach (var address in Model.Wallets)
+        {
+            var creditWallet = Model.CreditWallets.SingleOrDefault(x => x.Id == address.Id);
+            <section class="col-4 col-12-narrower">
+                <header>
+                    <h3>@address.Name</h3>
+                </header>
+                <p>
+                    @if(creditWallet == null)
+                    {
+                         <div class="alert alert-warning">
+                             This wallet is not enabled for payments with credit.
+                         </div>
+                    }
+                    else
+                    {
+                        <span>Total amount: <strong> @creditWallet.TotalAmount @address.Currency.Name</strong></span> <br />
+                        <span>Used amount: <strong> @creditWallet.UsedAmount @address.Currency.Name</strong></span><br />
+                        <span>Available amount: <strong> @(creditWallet.TotalAmount - creditWallet.UsedAmount) @address.Currency.Name</strong></span>
+                    }
+                        
+                    <br />
+                    Alias : <strong>@address.Alias</strong> <br />
+                    Description : <strong>@address.Description</strong> <br />
+                    Id : <strong>@address.Id</strong> <br />
+                </p>
+                <ul class="actions">
+                   
+                    @if(creditWallet == null || !creditWallet.Enabled)
+                    {
+                        @using(Html.BeginForm("EnableWallet","Credit",FormMethod.Post))
+                        {
+                            <input type="hidden" name="id" value="@address.Id" />
+                            <li><input type="submit" value="Enable" class="btn btn-info loadingButton" /></li>
+                        }
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("PayWithCheck","Credit", new { id = address.Id })" class="btn btn-info loadingButton">Select</a></li>
+                        if(creditWallet.UsedAmount == 0)
+                        {
+                            @using(Html.BeginForm("EnableWallet","Credit",FormMethod.Post))
+                            {
+                                <input type="hidden" name="id" value="@address.Id" />
+                                <li><input type="submit" value="Disable" class="btn btn-info loadingButton" /></li>
+                            }
+                        }
+                        else
+                        {
+                            <li>You can not disable this wallet because you have pending payments with credit.</li>
+                        }
+                        
+                    }
+                    
+                </ul>
+            </section>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <p class="alert alert-info alert-dismissible">You do not have registered wallets</p>
+        </div>
+    }
+
+
+</div>

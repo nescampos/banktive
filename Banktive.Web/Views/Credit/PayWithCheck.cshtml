@@ -1,0 +1,90 @@
+﻿@model Banktive.Web.Models.CreditModel.PayWithCheckViewModel
+@{
+    ViewData["Title"] = "Enter the data for payment with credit";
+}
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(x => x.Form.OriginWalletId)
+    <div class="row mt-2">
+        <div class="col-md-2">
+            Destination:
+        </div>
+        <div class="col-md-6">
+            @Html.DropDownListFor(x => x.Form.DestinationId, Model.Destinations, "Select destination", new { @class = "form-control" }) <br />
+            @Html.ValidationMessageFor(x => x.Form.DestinationId)
+        </div>
+        <div class="col-md-3">
+            <div class="alert alert-success" role="alert">
+                Select the recipient for your payment with credit
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-2">
+            Amount:
+        </div>
+        <div class="col-md-6">
+            @Html.TextBoxFor(x => x.Form.Amount, new { @class = "form-control", type="number" }) <br />
+            @Html.ValidationMessageFor(x => x.Form.Amount)
+        </div>
+        <div class="col-md-3">
+            <div class="alert alert-success" role="alert">
+                Enter the amount to send
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-2">
+            Date to cash:
+        </div>
+        <div class="col-md-6">
+            @Html.TextBoxFor(x => x.Form.DateToCash, new { @class = "form-control", type="date" }) <br />
+            @Html.ValidationMessageFor(x => x.Form.DateToCash)
+        </div>
+        <div class="col-md-3">
+            <div class="alert alert-success" role="alert">
+                Enter the date on which the recipient will be able to cash the money.
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-2">
+            Comments (optional):
+        </div>
+        <div class="col-md-6">
+            @Html.TextBoxFor(x => x.Form.Comments, new { @class = "form-control" }) <br />
+            @Html.ValidationMessageFor(x => x.Form.Comments)
+        </div>
+        <div class="col-md-3">
+            <div class="alert alert-success" role="alert">
+                If you have any comments, enter them here.
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <br />
+        </div>
+        <div class="form-group col-md-5">
+            <input type="submit" class="btn btn-primary loadingButton" value="Send" /> &emsp; <a href="@Url.Action("SelectWallet","Credit")" class="btn btn-warning loadingButton">Back</a>
+        </div>
+    </div>
+}

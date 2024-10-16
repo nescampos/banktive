@@ -1,0 +1,116 @@
+﻿@model Banktive.Web.Models.DepositModel.IndexDepositViewModel
+@{
+    ViewData["Title"] = "My deposits";
+}
+
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        @Html.ActionLink("Make time held deposit", "SelectWallet","Deposit",null,new {@class="btn btn-info"})
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+
+<div class="row">
+    <div class="col-12">
+        @using (Html.BeginForm(null, null, FormMethod.Get))
+        {
+        <div class="row">
+            <div class="col-md-3">
+                Wallet:@Html.DropDownListFor(x => x.Form.WalletId, Model.Wallets, "Select a wallet", new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                Year: @Html.DropDownListFor(x => x.Form.Year, Model.Years, "Select a year", new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                Month: @Html.DropDownListFor(x => x.Form.Month, Model.Months, "Select a month", new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                <br />
+                <input type="submit" value="Filter" class="btn btn-secondary loadingButton" />
+            </div>
+        </div>
+        }
+    </div>
+            
+
+    </div>
+<br /><br />
+@if (Model.Deposits.Any())
+{
+    <div class="row">
+        <div class="col-6 text-right">
+            @if (Model.Page > 1)
+            {
+                <a href="@Url.Action("Index","Deposit",new { page = (Model.Form.Page - 1), wallet = Model.Form.WalletId, year= Model.Form.Year, month = Model.Form.Month })">Previous</a>
+            }
+        </div>
+        <div class="col-6 text-left">
+            <a href="@Url.Action("Index","Deposit",new { page = (Model.Form.Page + 1), wallet = Model.Form.WalletId, year= Model.Form.Year, month = Model.Form.Month })">Next</a>
+        </div>
+    </div>
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Wallet</th>
+                <th>Destination</th>
+                <th>Amount (currency)</th>
+                <th>Time to Cash</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var payment in Model.Deposits)
+            {
+                <tr class="@(payment.IsSend? "table-warning":"table-success")">
+                    <td>@payment.CreatedAt.ToLocalTime()</td>
+                    <td>@payment.OriginAddress</td>
+                    <td>@payment.DestinationAddress</td>
+                    <td>
+                        @payment.Amount (@payment.AssetCode)
+                    </td>
+                    <td>
+                        @(payment.DateToCash.HasValue? payment.DateToCash.Value.ToLocalTime() : "")
+                    </td>
+                    <td>@Html.ActionLink("Details", "ViewTimeDeposit", "Deposit", new { id = payment.Id }, new { @class = "btn btn-success loadingButton" })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-6 text-right">
+            @if (Model.Page > 1)
+            {
+                <a href="@Url.Action("Index","Deposit",new { page = (Model.Form.Page - 1), wallet = Model.Form.WalletId, year= Model.Form.Year, month = Model.Form.Month })">Previous</a>
+            }
+        </div>
+        <div class="col-6 text-left">
+            <a href="@Url.Action("Index","Deposit",new { page = (Model.Form.Page + 1), wallet = Model.Form.WalletId, year= Model.Form.Year, month = Model.Form.Month })">Next</a>
+        </div>
+    </div>
+}
+else
+{
+    <p class="alert alert-info alert-dismissible fade show">You have not made deposits yet.</p>
+}

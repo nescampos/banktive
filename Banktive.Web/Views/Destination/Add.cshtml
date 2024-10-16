@@ -1,0 +1,82 @@
+﻿@model Banktive.Web.Models.DestinationModel.AddDestinationViewModel
+@{
+    ViewData["Title"] = "Add new destination";
+}
+
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-12">
+        @Html.ActionLink("Back", "Index","Destination", null, new { @class="btn btn-info" })
+    </div>
+</div>
+<br />
+
+@using(Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x => x.Form.Name)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(x => x.Form.Name, new { placeholder="My customer"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.Name)
+        </div>
+        <div class="col-3">
+            <div class="alert alert-info">
+                Enter the name for your new destination for payments and transactions.
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x => x.Form.Account)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(x => x.Form.Account, new { placeholder="12784534 or rSDgd.... or username"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.Account)
+        </div>
+        <div class="col-3">
+            <div class="alert alert-info">
+                Enter the number or name of the account of your destination in Banktive, or you can enter an address in the XRPL network.
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x => x.Form.Email)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(x => x.Form.Email, new { placeholder="test@test.com", type="email"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.Email)
+        </div>
+        <div class="col-3">
+            <div class="alert alert-info">
+                Enter the email for your destination.
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            <br />
+        </div>
+        <div class="col-6">
+            <input type="submit" value="Create" class="btn btn-success" />
+        </div>
+    </div>
+    <br />
+}

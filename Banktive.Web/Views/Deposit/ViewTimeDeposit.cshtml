@@ -1,0 +1,135 @@
+﻿@model Banktive.Web.Models.DepositModel.ViewTimeDepositViewModel
+@{
+    ViewData["Title"] = "Deposit details";
+}
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+
+<div class="row">
+    <div class="col-md-6">
+
+        <h3>Destination</h3>
+        Address: @Model.Deposit.XRPLDestinationWallet
+
+        @if (Model.Deposit.Destination != null)
+        {
+            <p>
+                Name : @Model.Deposit.Destination.Name<br />
+                Email: @Model.Deposit.Destination.Email<br />
+                Account (name/id): @Model.Deposit.Destination.Account<br />
+            </p>
+        }
+
+        @if (Model.Deposit.DepositStatusId == Constants.EscrowCancelled)
+        {
+            <div class="alert alert-warning" role="alert">
+                This deposit was canceled by the creator. <br />
+            </div>
+        }
+        else
+        {
+            if (Model.Deposit.DepositStatusId == Constants.EscrowConfirmed)
+            {
+                    
+                <div class="alert alert-primary" role="alert">
+                    This deposit was confirmed by the creator and you need to wait for the date to cash the money..<br />
+                </div>
+            }
+            else
+            {
+                if (Model.Deposit.DepositStatusId == Constants.EscrowCreated)
+                {
+                    <div class="alert alert-info" role="alert">
+                        Deposit is pending approval by the creator.<br />
+                    </div>
+
+                }
+                else
+                {
+                    if (Model.Deposit.DepositStatusId == Constants.EscrowCashed)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            The deposit was approved and the money cashed by the destination. <br />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success" role="alert">
+                            The deposit was rejected/expired by the creator. <br />
+                        </div>
+                        
+                    }
+                    
+                }               
+            }
+         }
+
+        
+
+
+    </div>
+    <div class="col-md-6">
+        <h3>Payment data</h3>
+        Wallet: @Model.Deposit.Wallet.Name <br />
+        Amount: @Model.Deposit.Amount <br />
+        Currency: @Model.Deposit.Currency.Name (@Model.Deposit.Currency.Code) <br />
+        Date to cash: <span>@Model.Deposit.DateToCash.Value.ToLocalTime()</span> <br />
+        Creation date: <span>@Model.Deposit.CreatedAt.ToLocalTime()</span> <br />
+        Comments: @Model.Deposit.Comments <br />
+    </div>
+
+</div>
+<br />
+@if(Model.Deposit.DepositStatusId == Constants.EscrowConfirmed && Model.Deposit.DateToCash.Value.Date <= DateTime.Today.Date && Model.WalletForCash.UserId == User.Identity.Name)
+{
+    @using(Html.BeginForm("CashTimeDeposit","Deposit",FormMethod.Post,new {}))
+    {
+        <div class="row">
+                    
+            <div class="col-6">
+                From: @Model.Deposit.UserId <br />
+                <input type="hidden" name="successfulPayment" id="successfulPayment"/>
+                <input type="hidden" value="@Model.Deposit.Id" name="id" id="id" />
+                <input type="hidden" value="@Model.WalletForCash.Id" name="idWalletToCash" id="idWalletToCash" />
+            </div>
+            <div class="col-6">
+                <input type="submit" value="Cash money" id="redeemMoney" class="btn btn-success" /> <br />
+            </div>
+        </div>
+        <br />
+    }
+        
+}
+
+<br />
+@if(Model.Deposit.DepositStatusId == Constants.EscrowConfirmed && Model.Deposit.DateToCash.Value.Date <= DateTime.Today.Date && Model.WalletForCash.UserId != User.Identity.Name)
+{
+    @using(Html.BeginForm("CancelTimeDeposit","Deposit",FormMethod.Post,new {}))
+    {
+        <div class="row">
+                    
+            <div class="col-6">
+                From: @Model.Deposit.UserId <br />
+                <input type="hidden" name="successfulPayment" id="successfulPayment"/>
+                <input type="hidden" value="@Model.Deposit.Id" name="id" id="id" />
+            </div>
+            <div class="col-6">
+                <input type="submit" value="Cancel deposit" id="redeemMoney" class="btn btn-danger" /> <br />
+            </div>
+        </div>
+        <br />
+    }
+        
+}

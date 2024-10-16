@@ -1,0 +1,75 @@
+﻿@model Banktive.Web.Models.ServiceModel.CheckSubscriptionViewModel
+@{
+    ViewData["Title"] = "Check pending charges";
+}
+
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-12">
+        @Html.ActionLink("Back", "Subscriptions","Service", null, new { @class="btn btn-info" })
+    </div>
+</div>
+<br />
+
+@if(Model.PendingAccount != null)
+{
+
+    <div class="row">
+        <div class="col-12">
+            <h4>Pending charge</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            Final date to pay: <b>@Model.PendingAccount.DueDate.ToLocalTime()</b>
+        </div>
+        <div class="col-3">
+            Amount: @Model.PendingAccount.Amount (@Model.PendingAccount.Currency.Name)
+        </div>
+    </div>
+
+    @using(Html.BeginForm())
+    {
+        @Html.HiddenFor(x => x.Form.SubscriptionId)
+        <div class="row">
+            <div class="col-3">
+                @Html.LabelFor(x => x.Form.WalletId)
+            </div>
+            <div class="col-6">
+                @Html.DropDownListFor(x => x.Form.WalletId, Model.Wallets,"Select a wallet",new {@class="form-control"}) <br />
+                @Html.ValidationMessageFor(x => x.Form.WalletId)
+            </div>
+            <div class="col-3">
+                <div class="alert alert-info">
+                    Select your wallet to make this payment
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-3">
+                <br />
+            </div>
+            <div class="col-6">
+                <input type="submit" value="Pay account" class="btn btn-success" />
+            </div>
+        </div>
+        <br />
+    }
+}
+else
+{
+    <p class="alert alert-success alert-dismissible fade show">You have no pending charges that you must pay.</p>
+}

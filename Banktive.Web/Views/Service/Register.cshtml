@@ -1,0 +1,82 @@
+﻿@model Banktive.Web.Models.ServiceModel.RegisterServiceViewModel
+@{
+    ViewData["Title"] = "Register new service";
+}
+
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-12">
+        @Html.ActionLink("Back", "Index","Service", null, new { @class="btn btn-info" })
+    </div>
+</div>
+<br />
+
+@using(Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x => x.Form.Name)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(x => x.Form.Name, new { placeholder="My service", @class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.Name)
+        </div>
+        <div class="col-3">
+            <div class="alert alert-info">
+                Enter the name for your new service for payments and transactions.
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x => x.Form.ServiceTypeId)
+        </div>
+        <div class="col-6">
+            @Html.DropDownListFor(x => x.Form.ServiceTypeId, Model.ServiceTypes,"Select a service type",new {@class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.ServiceTypeId)
+        </div>
+        <div class="col-3">
+            <div class="alert alert-info">
+                Enter the service type (category).
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x => x.Form.WalletId)
+        </div>
+        <div class="col-6">
+            @Html.DropDownListFor(x => x.Form.WalletId, Model.Wallets,"Select a wallet",new {@class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.WalletId)
+        </div>
+        <div class="col-3">
+            <div class="alert alert-info">
+                Select your wallet to receive payments
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            <br />
+        </div>
+        <div class="col-6">
+            <input type="submit" value="Register" class="btn btn-success" />
+        </div>
+    </div>
+    <br />
+}

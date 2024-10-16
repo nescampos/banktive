@@ -1,0 +1,97 @@
+﻿@model Banktive.Web.Models.ServiceModel.SubscribeServiceViewModel
+@{
+    ViewData["Title"] = "Subscribe service";
+}
+
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-12">
+        @Html.ActionLink("Back", "Subscriptions","Service", null, new { @class="btn btn-info" })
+    </div>
+</div>
+<br />
+
+@using(Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x => x.Form.ServiceName)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(x => x.Form.ServiceName, new { placeholder="My provider", @class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.ServiceName)
+        </div>
+        <div class="col-3">
+            <div class="alert alert-info">
+                Enter the name for the new service for make payments.
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x => x.Form.ServiceTypeId)
+        </div>
+        <div class="col-6">
+            @Html.DropDownListFor(x => x.Form.ServiceTypeId, Model.ServiceTypes,"Select a service type",new {@class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.ServiceTypeId)
+        </div>
+        <div class="col-3">
+            <div class="alert alert-info">
+                Enter the service type (category).
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x => x.Form.ServiceId)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(x => x.Form.ServiceId, new { placeholder="Service Id: 1234", @class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.ServiceId)
+        </div>
+        <div class="col-3">
+            <div class="alert alert-info">
+                Enter the id for the service (the service creator needs to give you that information)
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x => x.Form.CustomerId)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(x => x.Form.CustomerId, new { placeholder="Customer Id: 12ds34", @class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.CustomerId)
+        </div>
+        <div class="col-3">
+            <div class="alert alert-info">
+                Enter the customer id for the service (the service creator needs to give you that information)
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            <br />
+        </div>
+        <div class="col-6">
+            <input type="submit" value="Subscribe" class="btn btn-success" />
+        </div>
+    </div>
+    <br />
+}

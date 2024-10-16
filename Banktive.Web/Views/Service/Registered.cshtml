@@ -1,0 +1,58 @@
+﻿@model Banktive.Web.Models.ServiceModel.MyRegisteredViewModel
+@{
+    ViewData["Title"] = "My own services";
+}
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        @Html.ActionLink("Register new service", "Register","Service",null,new {@class="btn btn-info"})
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+<table class="table table-responsive table-hover">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Service Type</th>
+                <th>Wallet (to receive payments)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var payment in Model.Services)
+            {
+                <tr>
+                    <td>@payment.CreatedAt.ToLocalTime()</td>
+                    <td>@payment.Name</td>
+                    <td>@payment.ServiceType.Name</td>
+                    <td>
+                        @payment.Wallet.Name
+                    </td>
+                    <td>@Html.ActionLink("Details", "ServiceDetail", "Service", new { id = payment.Id }, new { @class = "btn btn-success loadingButton" })
+                        @Html.ActionLink("Accounts", "ServiceAccounts", "Service", new { id = payment.Id }, new { @class = "btn btn-primary loadingButton" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

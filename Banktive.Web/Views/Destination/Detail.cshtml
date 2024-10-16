@@ -1,0 +1,84 @@
+﻿@model Banktive.Web.Models.DestinationModel.DetailDestinationViewModel
+@{
+    ViewData["Title"] = "Details of " + Model.Destination.Name;
+}
+
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-4">
+        @Html.ActionLink("Back", "Index","Destination", null, new { @class="btn btn-info" })
+    </div>
+    <div class="col-4">
+        @Html.ActionLink("Update/delete", "Edit","Destination", new {id = Model.Destination.Id}, new { @class="btn btn-info" })
+    </div>
+</div>
+<br />
+
+
+<div class="row">
+    <div class="col-3">
+        Name
+    </div>
+    <div class="col-6">
+        <b>@Model.Destination.Name</b>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-3">
+        Account
+    </div>
+    <div class="col-6">
+        <b>@Model.Destination.Account</b>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-3">
+        Email
+    </div>
+    <div class="col-6">
+        <b>@Model.Destination.Email</b>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-3">
+        Created at
+    </div>
+    <div class="col-6">
+        <b>@Model.Destination.CreatedAt</b>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-3">
+        Last updated at
+    </div>
+    <div class="col-6">
+        <b>@Model.Destination.LastUpdatedAt</b>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-4">
+        @Html.ActionLink("Back", "Index","Destination", null, new { @class="btn btn-info" })
+    </div>
+    <div class="col-4">
+        @Html.ActionLink("Update/delete", "Edit","Destination", new {id = Model.Destination.Id}, new { @class="btn btn-info" })
+    </div>
+</div>
+<br />

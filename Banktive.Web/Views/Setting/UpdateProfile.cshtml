@@ -1,0 +1,149 @@
+﻿@model Banktive.Web.Models.SettingModel.UpdateProfileViewModel
+@{
+    ViewData["Title"] = "Update my profile";
+}
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+
+@using(Html.BeginForm())
+{
+    @if(Model.Profile != null)
+    {
+        <input type="hidden" name="Form.FirstName" id="Form_FirstName" value="@Model.Form.FirstName" />
+        <input type="hidden" name="Form.LastName" id="Form_LastName" value="@Model.Form.LastName" />
+        <input type="hidden" name="Form.TaxId" id="Form_TaxId" value="@Model.Form.TaxId" />
+        <div class="row">
+            <div class="col-3">
+                First name
+            </div>
+            <div class="col-5">
+                <b>@Model.Profile.FirstName</b>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-3">
+                Last name
+            </div>
+            <div class="col-5">
+                <b>@Model.Profile.LastName</b>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-3">
+                Tax Id
+            </div>
+            <div class="col-5">
+                <b>@Model.Profile.TaxId</b>
+            </div>
+        </div>
+        <br />
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-3">
+                @Html.LabelFor(x=> x.Form.FirstName)
+            </div>
+            <div class="col-5">
+                @Html.TextBoxFor(x=> x.Form.FirstName, new {@class="form-control"}) <br />
+                @Html.ValidationMessageFor(x => x.Form.FirstName)
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-3">
+                @Html.LabelFor(x=> x.Form.LastName)
+            </div>
+            <div class="col-5">
+                @Html.TextBoxFor(x=> x.Form.LastName, new {@class="form-control"}) <br />
+                @Html.ValidationMessageFor(x => x.Form.LastName)
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-3">
+                @Html.LabelFor(x=> x.Form.TaxId)
+            </div>
+            <div class="col-5">
+                @Html.TextBoxFor(x=> x.Form.TaxId, new {@class="form-control"}) <br />
+                @Html.ValidationMessageFor(x => x.Form.TaxId)
+            </div>
+        </div>
+        <br />
+    }
+    
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x=> x.Form.AddressLine1)
+        </div>
+        <div class="col-5">
+            @Html.TextBoxFor(x=> x.Form.AddressLine1, new {@class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.AddressLine1)
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x=> x.Form.AddressLine2) (optional)
+        </div>
+        <div class="col-5">
+            @Html.TextBoxFor(x=> x.Form.AddressLine2, new {@class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.AddressLine2)
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x=> x.Form.City)
+        </div>
+        <div class="col-5">
+            @Html.TextBoxFor(x=> x.Form.City, new {@class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.City)
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x=> x.Form.CountryId)
+        </div>
+        <div class="col-5">
+            @Html.DropDownListFor(x=> x.Form.CountryId, Model.Countries, "Select the country", new {@class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.CountryId)
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-3">
+            @Html.LabelFor(x=> x.Form.PostalCode)
+        </div>
+        <div class="col-5">
+            @Html.TextBoxFor(x=> x.Form.PostalCode, new {@class="form-control"}) <br />
+            @Html.ValidationMessageFor(x => x.Form.PostalCode)
+        </div>
+    </div>
+    <br />
+    
+    <div class="row">
+        <div class="col-5">
+            <br />
+        </div>
+        <div class="col-5">
+            <input type="submit" value="Update profile" class="btn btn-primary" />
+        </div>
+    </div>
+}
+<br /><br />

@@ -1,0 +1,55 @@
+﻿@model Banktive.Web.Models.ServiceModel.MySubscriptionsViewModel
+@{
+    ViewData["Title"] = "My subscriptions";
+}
+
+
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-3">
+        <br/>
+    </div>
+    <div class="col-6">
+        @Html.ActionLink("Subscribe service", "Subscribe","Service",null,new {@class="btn btn-info"})
+    </div>
+    <div class="col-3">
+        <br/>
+    </div>
+</div>
+<br />
+
+<table class="table table-responsive table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Customer Id</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var payment in Model.Subscriptions)
+        {
+            <tr>
+                <td>@payment.ServiceName</td>
+                <td>@payment.ServiceType.Name</td>
+                <td>@payment.CustomerId</td>
+                <td>@Html.ActionLink("Check pending charges", "CheckSubscription", "Service", new { id = payment.Id }, new { @class = "btn btn-success loadingButton" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
